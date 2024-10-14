@@ -51,13 +51,18 @@ def analysis_all_field(phone_number):
     analysis_dict["len_incre_or_decre__tail"] = len_incre_or_decre__tail(phone_number)
     
     # Xử lý trường khen hiếm
-    if result_analysis.get("Dãy đẹp đuôi"):
-        tail_count, head_tail_count = process_tail_and_head(result_analysis)
-        analysis_dict["khan_hiem_tail"] = tail_count
-        analysis_dict["khan_hiem_head_and_tail"] = head_tail_count
-    else:
+    if result_analysis.get("Dãy đẹp đuôi"):  # Kiểm tra xem có tail hay không
+        if result_analysis.get("Dãy đẹp đầu"):  # Có cả head và tail
+            tail_count, head_tail_count = process_tail_and_head(result_analysis)
+            analysis_dict["khan_hiem_tail"] = tail_count
+            analysis_dict["khan_hiem_head_and_tail"] = head_tail_count
+        else:  # Chỉ có tail, không có head
+            analysis_dict["khan_hiem_tail"] = process_tail(result_analysis)
+            analysis_dict["khan_hiem_head_and_tail"] = 0
+    else:  # Không có tail
         analysis_dict["khan_hiem_tail"] = 0
         analysis_dict["khan_hiem_head_and_tail"] = 0
+
 
     # Kết hợp các phân tích trong result_analysis vào analysis_dict
     combined_analysis = {**analysis_dict, **result_analysis}
@@ -156,6 +161,17 @@ def process_tail_and_head(result_analysis):
     head_tail_count = count_documents_tail_and_head(tail_value, head_value)
 
     return tail_count, head_tail_count
+
+def process_tail(result_analysis):
+    tail_value = result_analysis.get("Dãy đẹp đuôi")
+
+    if not tail_value:
+        return 0, 0  # Không có tail, không cần gọi API
+
+    # Kiểm tra và lấy dữ liệu từ Redis hoặc gọi API nếu không có
+    tail_count = count_documents_tail(tail_value)
+
+    return tail_count
 
 def count_type_number(number):
     return len(set(number))
