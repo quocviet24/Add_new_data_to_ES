@@ -52,14 +52,14 @@ def process_batch(hits):
                         "len_incre_or_decre__tail": analysis_results[0].get("len_incre_or_decre__tail"),
                         "khan_hiem_tail": analysis_results[0].get("khan_hiem_tail"),
                         "khan_hiem_head_and_tail": analysis_results[0].get("khan_hiem_head_and_tail"),
-                        "dau_dep": analysis_results[0].get("Dạng đẹp đầu"),
-                        "dau_dang": analysis_results[0].get("Dãy đẹp đầu"),
+                        "dau_dang": analysis_results[0].get("Dạng đẹp đầu"),
+                        "dau_dep": analysis_results[0].get("Dãy đẹp đầu"),
                         "dau_index": analysis_results[0].get("Vị trí đầu"),
-                        "giua_dep": analysis_results[0].get("Dạng đẹp giữa"),
-                        "giua_dang": analysis_results[0].get("Dãy đẹp giữa"),
+                        "giua_dang": analysis_results[0].get("Dạng đẹp giữa"),
+                        "giua_dep": analysis_results[0].get("Dãy đẹp giữa"),
                         "giua_index": analysis_results[0].get("Vị trí giữa"),
-                        "duoi_dep": analysis_results[0].get("Dạng đẹp đuôi"),
-                        "duoi_dang": analysis_results[0].get("Dãy đẹp đuôi"),
+                        "duoi_dang": analysis_results[0].get("Dạng đẹp đuôi"),
+                        "duoi_dep": analysis_results[0].get("Dãy đẹp đuôi"),
                         "duoi_index": analysis_results[0].get("Vị trí đuôi")
                     }
 
@@ -80,7 +80,7 @@ def process_batch(hits):
     return actions
 
 def fetch_and_handle_data_pro_ver2():
-    limit = 1000  # Limit documents fetched at once
+    limit = 9000  # Limit documents fetched at once
     scroll_time = '10m'  # Scroll context time
 
     while True:
@@ -100,7 +100,7 @@ def fetch_and_handle_data_pro_ver2():
                     "must_not": [
                         {
                             "exists": {
-                                "field": "sl_phim"  # Điều kiện để trường sl_phim không tồn tại
+                                "field": "sl_phim"  
                             }
                         }
                     ]
@@ -176,4 +176,4 @@ def count_records_with_sl_phim(elastic_client, index_name):
 # Ví dụ gọi hàm
 count = count_records_with_sl_phim(elastic_local, 'khoso')
 print(f"Số lượng bản ghi có trường 'sl_phim' tồn tại: {count}")
-# fetch_and_handle_data_pro_ver2()
+fetch_and_handle_data_pro_ver2()

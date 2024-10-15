@@ -67,6 +67,6 @@ def count_records_in_redis():
 
     return count
 
-# Gọi hàm để đếm số lượng bản ghi trong Redis
+#Gọi hàm để đếm số lượng bản ghi trong Redis
 record_count = count_records_in_redis()
-print(f"Số lượng bản ghi trong Redis: {record_count}")
+print(record_count)
