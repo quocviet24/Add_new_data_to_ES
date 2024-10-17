@@ -16,52 +16,61 @@ def analysis_all_field(phone_number):
     # Khởi tạo dictionary để lưu trữ các phân tích
     analysis_dict = {
         "sl_phim": count_type_number(phone_number),
-        "2_so_dau": phone_number[:2],
-        "3_so_dau": phone_number[:3],
-        "last_number": phone_number[-1],
-        "sl_689": sum(phone_number.count(d) for d in '689'),
+        # "2_so_dau": phone_number[:2],
+        # "3_so_dau": phone_number[:3],
+        # "last_number": phone_number[-1],
+        # "sl_689": sum(phone_number.count(d) for d in '689'),
     }
 
     # Xử lý dãy đẹp đuôi
-    tail_sequence = result_analysis.get("Dãy đẹp đuôi", [])
-    sl_689_t = sl_04_t = 0
-    if tail_sequence:
-        sl_689_t = sum(tail_sequence.count(d) for d in '689')
-        sl_04_t = sum(tail_sequence.count(d) for d in '04')
+    # tail_sequence = result_analysis.get("Dãy đẹp đuôi", [])
+    # sl_689_t = sl_04_t = 0
+    # if tail_sequence:
+    #     sl_689_t = sum(tail_sequence.count(d) for d in '689')
+    #     sl_04_t = sum(tail_sequence.count(d) for d in '04')
     
-    analysis_dict["sl_689_t"] = sl_689_t
-    analysis_dict["sl_04_t"] = sl_04_t
-
-    # Tính toán các phần còn lại của số điện thoại
-    remaining_phone_number_0_4 = phone_number[3:]
-    phone_number_49_53 = phone_number
-
-    # Loại bỏ các dãy đẹp từ phone_number_49_53 và remaining_phone_number_0_4
-    for key in ["Dãy đẹp đầu", "Dãy đẹp giữa", "Dãy đẹp đuôi"]:
-        if result_analysis.get(key):
-            values = result_analysis[key] if isinstance(result_analysis[key], list) else [result_analysis[key]]
-            for value in values:
-                phone_number_49_53 = phone_number_49_53.replace(value, "")
-                remaining_phone_number_0_4 = remaining_phone_number_0_4.replace(value, "")
-
-    # Tính các trường còn lại trong phân tích
-    analysis_dict["sl_49_53_not_in"] = phone_number_49_53.count('49') + phone_number_49_53.count('53')
-    analysis_dict["sl_0_4_not_in"] = remaining_phone_number_0_4.count('0') + remaining_phone_number_0_4.count('4')
-    analysis_dict["sl_dep_lien_duoi"] = calculate_tail_length(result_analysis)
-    analysis_dict["len_incre_or_decre__tail"] = len_incre_or_decre__tail(phone_number)
+    # analysis_dict["sl_689_t"] = sl_689_t
+    # analysis_dict["sl_04_t"] = sl_04_t
     
-    # Xử lý trường khen hiếm
-    if result_analysis.get("Dãy đẹp đuôi"):  # Kiểm tra xem có tail hay không
-        if result_analysis.get("Dãy đẹp đầu"):  # Có cả head và tail
-            tail_count, head_tail_count = process_tail_and_head(result_analysis)
-            analysis_dict["khan_hiem_tail"] = tail_count
-            analysis_dict["khan_hiem_head_and_tail"] = head_tail_count
-        else:  # Chỉ có tail, không có head
-            analysis_dict["khan_hiem_tail"] = process_tail(result_analysis)
-            analysis_dict["khan_hiem_head_and_tail"] = 0
-    else:  # Không có tail
-        analysis_dict["khan_hiem_tail"] = 0
-        analysis_dict["khan_hiem_head_and_tail"] = 0
+    # Kiểm tra cấu trúc của result_analysis
+    # In cấu trúc của result_analysis để xem chi tiết
+    analysis_dict["sl_49_53_not_in"] = (
+        phone_number.count('49') + phone_number.count('53')
+    ) - (
+        result_analysis["Dãy đẹp đầu"].count('49') + 
+        result_analysis["Dãy đẹp đuôi"].count('49') + 
+        sum(str(item).count('49') for item in result_analysis["Dãy đẹp giữa"]) +  # Lặp qua danh sách Dãy đẹp giữa
+        result_analysis["Dãy đẹp đầu"].count('53') + 
+        result_analysis["Dãy đẹp đuôi"].count('53') + 
+        sum(str(item).count('53') for item in result_analysis["Dãy đẹp giữa"])  # Lặp qua danh sách Dãy đẹp giữa
+    )
+
+    analysis_dict["sl_0_4_not_in"] = (
+        phone_number[3:].count('0') + phone_number[3:].count('4')
+    ) - (
+        result_analysis["Dãy đẹp đầu"][3:].count('0') + 
+        result_analysis["Dãy đẹp đầu"][3:].count('4') + 
+        result_analysis["Dãy đẹp đuôi"].count('0') + 
+        result_analysis["Dãy đẹp đuôi"].count('4') + 
+        sum(str(item).count('0') + str(item).count('4') for item in result_analysis["Dãy đẹp giữa"])  # Lặp qua danh sách Dãy đẹp giữa
+    )
+
+        
+    # analysis_dict["sl_dep_lien_duoi"] = calculate_tail_length(result_analysis)
+    # analysis_dict["len_incre_or_decre__tail"] = len_incre_or_decre__tail(phone_number)
+    
+    # # Xử lý trường khen hiếm
+    # if result_analysis.get("Dãy đẹp đuôi"):  # Kiểm tra xem có tail hay không
+    #     if result_analysis.get("Dãy đẹp đầu"):  # Có cả head và tail
+    #         tail_count, head_tail_count = process_tail_and_head(result_analysis)
+    #         analysis_dict["khan_hiem_tail"] = tail_count
+    #         analysis_dict["khan_hiem_head_and_tail"] = head_tail_count
+    #     else:  # Chỉ có tail, không có head
+    #         analysis_dict["khan_hiem_tail"] = process_tail(result_analysis)
+    #         analysis_dict["khan_hiem_head_and_tail"] = 0
+    # else:  # Không có tail
+    #     analysis_dict["khan_hiem_tail"] = 0
+    #     analysis_dict["khan_hiem_head_and_tail"] = 0
 
 
     # Kết hợp các phân tích trong result_analysis vào analysis_dict
@@ -241,3 +250,6 @@ def len_incre_or_decre__tail(number):
             length_decre += 1
     
     return max(length_incre, length_decre)
+
+s =analysis_all_field("0915580369")
+print(s)

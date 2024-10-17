@@ -39,28 +39,28 @@ def process_batch(hits):
                 
                 if analysis_results:
                     new_record = {
-                        "sl_phim": analysis_results[0].get("sl_phim"),
-                        "2_so_dau": analysis_results[0].get("2_so_dau"),
-                        "3_so_dau": analysis_results[0].get("3_so_dau"),
-                        "last_number": analysis_results[0].get("last_number"),
-                        "sl_689": analysis_results[0].get("sl_689"),
-                        "sl_689_t": analysis_results[0].get("sl_689_t"),
-                        "sl_04_t": analysis_results[0].get("sl_04_t"),
+                        # "sl_phim": analysis_results[0].get("sl_phim"),
+                        # "2_so_dau": analysis_results[0].get("2_so_dau"),
+                        # "3_so_dau": analysis_results[0].get("3_so_dau"),
+                        # "last_number": analysis_results[0].get("last_number"),
+                        # "sl_689": analysis_results[0].get("sl_689"),
+                        # "sl_689_t": analysis_results[0].get("sl_689_t"),
+                        # "sl_04_t": analysis_results[0].get("sl_04_t"),
                         "sl_49_53_not_in": analysis_results[0].get("sl_49_53_not_in"),
                         "sl_0_4_not_in": analysis_results[0].get("sl_0_4_not_in"),
-                        "sl_dep_lien_duoi": analysis_results[0].get("sl_dep_lien_duoi"),
-                        "len_incre_or_decre__tail": analysis_results[0].get("len_incre_or_decre__tail"),
-                        "khan_hiem_tail": analysis_results[0].get("khan_hiem_tail"),
-                        "khan_hiem_head_and_tail": analysis_results[0].get("khan_hiem_head_and_tail"),
-                        "dau_dang": analysis_results[0].get("Dạng đẹp đầu"),
-                        "dau_dep": analysis_results[0].get("Dãy đẹp đầu"),
-                        "dau_index": analysis_results[0].get("Vị trí đầu"),
-                        "giua_dang": analysis_results[0].get("Dạng đẹp giữa"),
-                        "giua_dep": analysis_results[0].get("Dãy đẹp giữa"),
-                        "giua_index": analysis_results[0].get("Vị trí giữa"),
-                        "duoi_dang": analysis_results[0].get("Dạng đẹp đuôi"),
-                        "duoi_dep": analysis_results[0].get("Dãy đẹp đuôi"),
-                        "duoi_index": analysis_results[0].get("Vị trí đuôi")
+                        # "sl_dep_lien_duoi": analysis_results[0].get("sl_dep_lien_duoi"),
+                        # "len_incre_or_decre__tail": analysis_results[0].get("len_incre_or_decre__tail"),
+                        # "khan_hiem_tail": analysis_results[0].get("khan_hiem_tail"),
+                        # "khan_hiem_head_and_tail": analysis_results[0].get("khan_hiem_head_and_tail"),
+                        # "dau_dang": analysis_results[0].get("Dạng đẹp đầu"),
+                        # "dau_dep": analysis_results[0].get("Dãy đẹp đầu"),
+                        # "dau_index": analysis_results[0].get("Vị trí đầu"),
+                        # "giua_dang": analysis_results[0].get("Dạng đẹp giữa"),
+                        # "giua_dep": analysis_results[0].get("Dãy đẹp giữa"),
+                        # "giua_index": analysis_results[0].get("Vị trí giữa"),
+                        # "duoi_dang": analysis_results[0].get("Dạng đẹp đuôi"),
+                        # "duoi_dep": analysis_results[0].get("Dãy đẹp đuôi"),
+                        # "duoi_index": analysis_results[0].get("Vị trí đuôi")
                     }
 
                     # Chỉ cập nhật các trường mong muốn, không thêm id hay doc
@@ -94,13 +94,6 @@ def fetch_and_handle_data_pro_ver2():
                         {
                             "term": {
                                 "m": 10  # Điều kiện cho trường m = 10
-                            }
-                        }
-                    ],
-                    "must_not": [
-                        {
-                            "exists": {
-                                "field": "sl_phim"  
                             }
                         }
                     ]
