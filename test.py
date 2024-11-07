@@ -20,7 +20,7 @@ def count_records_with_sl_phim(elastic_client, index_name):
             "bool": {
                 "must_not": {
                     "exists": {
-                        "field": "sl_phim"  # Kiểm tra xem trường sl_phim không tồn tại
+                        "field": "am_duong"  # Kiểm tra xem trường sl_phim không tồn tại
                     }
                 }
             }
@@ -41,7 +41,7 @@ def count_records_with_sl_phim_2(elastic_client, index_name):
     query = {
         "query": {
             "exists": {
-                "field": "sl_phim"  # Kiểm tra xem trường sl_phim có tồn tại hay không
+                "field": "am_duong"  # Kiểm tra xem trường sl_phim có tồn tại hay không
             }
         }
     }
