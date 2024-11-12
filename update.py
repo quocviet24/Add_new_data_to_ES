@@ -50,6 +50,7 @@ def process_batch(hits):
                         "sl_0_4_7not_in": analysis_results[0].get("sl_0_4_7not_in"),
                         "sl_dep_lien_duoi": analysis_results[0].get("sl_dep_lien_duoi"),
                         "len_incre_or_decre__tail": analysis_results[0].get("len_incre_or_decre__tail"),
+                        "duoi_type" :  analysis_results[0].get("duoi_type"),
                         # "khan_hiem_tail": analysis_results[0].get("khan_hiem_tail"),
                         # "khan_hiem_head_and_tail": analysis_results[0].get("khan_hiem_head_and_tail"),
                         "am_duong": analysis_results[0].get("am_duong"),

@@ -233,7 +233,7 @@ def identify_beautiful_sequences_with_positions(sim_number):
         "AA.A⁺¹A⁺¹": r'(?=(\d{4}))',
         "AABB": r'(?=(\d{4}))',
         "ABBA": r'(?=(\d{4}))',
-        "ABAB⁺¹": r"(\d)(\d)\1(\d)",
+        "AB.AB⁺¹": r"(\d)(\d)\1(\d)",
         "ABA⁺¹B": r"(\d)(\d)(\d)\2",
         "A⁺¹A⁺²A⁺³A⁺⁴": r'(?=(\d{4}))',
         "AA⁺²A⁺⁴A⁺⁶": r'(?=(\d{4}))',
@@ -546,7 +546,7 @@ def identify_beautiful_sequences_with_positions(sim_number):
             return len(sequence) == 4 and count_type_number(sequence) >= 2
           case "A⁺¹A⁺²":
             return len(sequence) == 2 and int(sequence[1]) == int(sequence[0]) + 1  # Kiểm tra điều kiện AA1
-          case "ABAB⁺¹":
+          case "AB.AB⁺¹":
             return len(sequence) == 4 and count_type_number(sequence) == 3 and int(sequence[3]) == int(sequence[1]) + 1  
           case "ABA⁺¹B":
             return len(sequence) == 4 and (int(sequence[2]) == int(sequence[0]) + 1)
@@ -616,7 +616,7 @@ def identify_beautiful_sequences_with_positions(sim_number):
             return len(sequence) == 6 and count_type_number(sequence) == 4
           case "ABBBB.ACCCC":
             return len(sequence) == 10 and count_type_number(sequence) == 3
-          case "ABCA⁻¹BC":
+          case "ABC.A⁻¹BC":
             return len(sequence) == 6 and (count_type_number(sequence) == 4 or count_type_number(sequence) == 3) and int(sequence[0]) - 1 == int(sequence[3])
           case "ABC.AB⁻¹C":
             return len(sequence) == 6 and (count_type_number(sequence) == 4 or count_type_number(sequence) == 3) and int(sequence[1]) - 1 == int(sequence[4])
@@ -824,6 +824,6 @@ def count_type_number(number):
 
 
 # #Chạy hàm với input mới
-# sim_input = "0926632993"
+# sim_input = "0888899366"
 # result = identify_beautiful_sequences_with_positions(sim_input)
 # print(sim_input + ": " + str(result))

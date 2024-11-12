@@ -57,7 +57,7 @@ def count_records_with_sl_phim_2(elastic_client, index_name):
 
 # Ví dụ gọi hàm
 count = count_records_with_sl_phim_2(elastic_local, 'khoso')
-print(f"Số lượng bản ghi có trường 'sl_phim' tồn tại: {count}") 
+print(f"Số lượng bản ghi có trường 'am_duong' tồn tại: {count}") 
   
 count = count_records_with_sl_phim(elastic_local, 'khoso')
-print(f"Số lượng bản ghi không có trường 'sl_phim' tồn tại: {count}")
+print(f"Số lượng bản ghi không có trường 'am_duong' tồn tại: {count}")
