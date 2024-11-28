@@ -39,10 +39,10 @@ def process_batch(hits):
                 
                 if analysis_results:
                     new_record = {
-                        # "sl_phim": analysis_results[0].get("sl_phim"),
-                        # "2_so_dau": analysis_results[0].get("2_so_dau"),
-                        # "3_so_dau": analysis_results[0].get("3_so_dau"),
-                        # "last_number": analysis_results[0].get("last_number"),
+                        "sl_phim": analysis_results[0].get("sl_phim"),
+                        "2_so_dau": analysis_results[0].get("2_so_dau"),
+                        "3_so_dau": analysis_results[0].get("3_so_dau"),
+                        "last_number": analysis_results[0].get("last_number"),
                         "sl_689": analysis_results[0].get("sl_689"),
                         "sl_689_t": analysis_results[0].get("sl_689_t"),
                         "sl_04_t": analysis_results[0].get("sl_04_t"),
@@ -148,27 +148,6 @@ def fetch_and_handle_data_pro_ver2():
 
     # Clear scroll context khi hoàn thành
     elastic_local.clear_scroll(scroll_id=scroll_id)
-    
-def count_records_with_sl_phim(elastic_client, index_name):
-    # Truy vấn Elasticsearch để đếm số lượng bản ghi có trường sl_phim tồn tại
-    query = {
-        "query": {
-            "exists": {
-                "field": "sl_phim"  # Kiểm tra xem trường sl_phim có tồn tại hay không
-            }
-        }
-    }
-
-    # Thực hiện truy vấn và lấy tổng số lượng kết quả
-    response = elastic_client.count(
-        index=index_name,
-        body=query
-    )
-    
-    # Trả về số lượng bản ghi có trường sl_phim tồn tại
-    return response['count']
 
 # Ví dụ gọi hàm
-count = count_records_with_sl_phim(elastic_local, 'khoso')
-print(f"Số lượng bản ghi có trường 'sl_phim' tồn tại: {count}")
 fetch_and_handle_data_pro_ver2()

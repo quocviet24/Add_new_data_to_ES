@@ -18,9 +18,11 @@ def count_records_with_sl_phim(elastic_client, index_name):
     query = {
         "query": {
             "bool": {
-                "must_not": {
-                    "exists": {
-                        "field": "am_duong"  # Kiểm tra xem trường sl_phim không tồn tại
+                "filter": {
+                    "range": {
+                        "sl_0_4_7not_in": {
+                            "lt": 0
+                        }
                     }
                 }
             }
@@ -40,8 +42,10 @@ def count_records_with_sl_phim_2(elastic_client, index_name):
     # Truy vấn Elasticsearch để đếm số lượng bản ghi có trường sl_phim tồn tại
     query = {
         "query": {
-            "exists": {
-                "field": "am_duong"  # Kiểm tra xem trường sl_phim có tồn tại hay không
+            "range": {
+                "p": {
+                    "lt": 500000  # Điều kiện p < 500000
+                }
             }
         }
     }
@@ -57,7 +61,7 @@ def count_records_with_sl_phim_2(elastic_client, index_name):
 
 # Ví dụ gọi hàm
 count = count_records_with_sl_phim_2(elastic_local, 'khoso')
-print(f"Số lượng bản ghi có trường 'am_duong' tồn tại: {count}") 
+print(f"Số lượng bản ghi có trường 'p' < 500000: {count}") 
   
 count = count_records_with_sl_phim(elastic_local, 'khoso')
-print(f"Số lượng bản ghi không có trường 'am_duong' tồn tại: {count}")
+print(f"Số lượng bản ghi có trường 'sl_0_4_7not_in < 0: {count}")

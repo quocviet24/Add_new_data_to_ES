@@ -5,7 +5,9 @@ import json
 import requests
 import time
 
-data_map_type_sim = {
+
+def analysis_all_field(phone_number):
+    data_map_type_sim = {
     "AA": 'bang',
     "AAA": 'bang',
     "AAAA": 'bang',
@@ -139,9 +141,7 @@ data_map_type_sim = {
     "YYYY": 'nam_sinh',
     "DD.MM.YY": 'nam_sinh',
     "DB": 'dac_biet',
-}
-
-def analysis_all_field(phone_number):
+    }
     # Khởi tạo list để lưu kết quả phân tích
     analysis = []
     
@@ -150,21 +150,22 @@ def analysis_all_field(phone_number):
 
     # Khởi tạo dictionary để lưu trữ các phân tích
     analysis_dict = {
-        # "sl_phim": count_type_number(phone_number),
-        # "2_so_dau": phone_number[:2],
-        # "3_so_dau": phone_number[:3],
-        # "last_number": phone_number[-1],
+        "sl_phim": count_type_number(phone_number),
+        "2_so_dau": phone_number[:2],
+        "3_so_dau": phone_number[:3],
+        "last_number": phone_number[-1],
         "sl_689": sum(phone_number.count(d) for d in '689'),
     }
 
     # Xử lý dãy đẹp đuôi
     tail_sequence = result_analysis.get("Dãy đẹp đuôi", [])
+    tail_dang = result_analysis.get("Dạng đẹp đuôi", [])
     
     sl_689_t = sl_04_t = 0
     if tail_sequence:
         sl_689_t = sum(tail_sequence.count(d) for d in '689')
         sl_04_t = sum(tail_sequence.count(d) for d in '04')
-        analysis_dict["duoi_type"] = data_map_type_sim.get(tail_sequence, None)
+        analysis_dict["duoi_type"] = data_map_type_sim.get(tail_dang, None)
         
     analysis_dict["sl_689_t"] = sl_689_t
     analysis_dict["sl_04_t"] = sl_04_t
@@ -198,32 +199,37 @@ def analysis_all_field(phone_number):
         result_analysis["Dãy đẹp đuôi"].count('53') + 
         sum(str(item).count('53') for item in result_analysis["Dãy đẹp giữa"])  # Lặp qua danh sách Dãy đẹp giữa
     )
+    tail_position = result_analysis.get("Vị trí đuôi", "")
 
-    # lấy 3 số đấu
-    remaining_numbers = phone_number[:3]
-    
-    # Đếm tổng số lượng 0, 4, và 7 trong phần còn lại
-    total_count_047 = phone_number.count('0') + phone_number.count('4') + phone_number.count('7')
-    total_count_047_in_3_number_first = remaining_numbers.count('0') + remaining_numbers.count('4') + remaining_numbers.count('7')
-    # Loại bỏ số lượng 0, 4, 7 trong "Dãy đẹp đầu" (trừ 3 số đầu)
-    excluded_count = 0
-    # Loại bỏ số lượng 0, 4, 7 trong "Dãy đẹp đuôi"
-    if "Dãy đẹp đuôi" in result_analysis:
-        excluded_count += result_analysis["Dãy đẹp đuôi"].count('0')
-        excluded_count += result_analysis["Dãy đẹp đuôi"].count('4')
-        excluded_count += result_analysis["Dãy đẹp đuôi"].count('7')
-    
-    # Loại bỏ số lượng 0, 4, 7 trong "Dãy đẹp giữa" nếu dạng là AAAA, AAAAA, hoặc AAA.AAA
-    if "Dãy đẹp giữa" in result_analysis and "Dạng đẹp giữa" in result_analysis:
-        for item, pattern in zip(result_analysis["Dãy đẹp giữa"], result_analysis["Dạng đẹp giữa"]):
-            # Loại bỏ các dạng AAAA, AAAAA, và AAA.AAA
-            if pattern in ["AAAA", "AAAAA", "AAA.AAA"]:
-                excluded_count += str(item).count('0')
-                excluded_count += str(item).count('4')
-                excluded_count += str(item).count('7')
-    # Tính số lượng 0, 4, 7 còn lại sau khi loại trừ
-    remaining_count_047 = total_count_047 - excluded_count - total_count_047_in_3_number_first
-    analysis_dict["sl_0_4_7not_in"] = remaining_count_047
+    if isinstance(tail_position, int) or (isinstance(tail_position, str) and tail_position.isdigit()):
+        if int(tail_position) < 3:
+            analysis_dict["sl_0_4_7not_in"] = 0
+        else:
+            # lấy 3 số đấu
+            remaining_numbers = phone_number[:3]
+            
+            # Đếm tổng số lượng 0, 4, và 7 trong phần còn lại
+            total_count_047 = phone_number.count('0') + phone_number.count('4') + phone_number.count('7')
+            total_count_047_in_3_number_first = remaining_numbers.count('0') + remaining_numbers.count('4') + remaining_numbers.count('7')
+            # Loại bỏ số lượng 0, 4, 7 trong "Dãy đẹp đầu" (trừ 3 số đầu)
+            excluded_count = 0
+            # Loại bỏ số lượng 0, 4, 7 trong "Dãy đẹp đuôi"
+            if "Dãy đẹp đuôi" in result_analysis:
+                excluded_count += result_analysis["Dãy đẹp đuôi"].count('0')
+                excluded_count += result_analysis["Dãy đẹp đuôi"].count('4')
+                excluded_count += result_analysis["Dãy đẹp đuôi"].count('7')
+            
+            # Loại bỏ số lượng 0, 4, 7 trong "Dãy đẹp giữa" nếu dạng là AAAA, AAAAA, hoặc AAA.AAA
+            if "Dãy đẹp giữa" in result_analysis and "Dạng đẹp giữa" in result_analysis:
+                for item, pattern in zip(result_analysis["Dãy đẹp giữa"], result_analysis["Dạng đẹp giữa"]):
+                    # Loại bỏ các dạng AAAA, AAAAA, và AAA.AAA
+                    if pattern in ["AAAA", "AAAAA", "AAA.AAA"]:
+                        excluded_count += str(item).count('0')
+                        excluded_count += str(item).count('4')
+                        excluded_count += str(item).count('7')
+            # Tính số lượng 0, 4, 7 còn lại sau khi loại trừ
+            remaining_count_047 = total_count_047 - excluded_count - total_count_047_in_3_number_first
+            analysis_dict["sl_0_4_7not_in"] = remaining_count_047
         
     analysis_dict["sl_dep_lien_duoi"] = calculate_tail_length(result_analysis)
     analysis_dict["len_incre_or_decre__tail"] = len_incre_or_decre__tail(phone_number)
